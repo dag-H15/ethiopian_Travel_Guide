@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Loader from '../components/Loader';
+import { useFavorites } from '../context/FavoritesContext';
 
 const DestinationDetails = () => {
   const { id } = useParams();
   const [destination, setDestination] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   useEffect(() => {
     fetchDestinationDetails();
@@ -14,7 +16,50 @@ const DestinationDetails = () => {
   const fetchDestinationDetails = async () => {
     try {
       setLoading(true);
-      setDestination(null);
+      const placeholders = [
+        {
+          _id: '1',
+          name: 'Lalibela Rock-Hewn Churches',
+          location: 'Lalibela, Amhara',
+          category: 'Historical',
+          description: 'A monolithic church complex carved entirely out of a single rock, dating back to the 12th century. The intricate carvings and fascinating history make it a UNESCO World Heritage site and a prominent pilgrimage destination.',
+          image: 'https://images.pexels.com/photos/10196720/pexels-photo-10196720.jpeg',
+          latitude: 12.0315,
+          longitude: 39.0410
+        },
+        {
+          _id: '2',
+          name: 'Simien Mountains National Park',
+          location: 'Gondar, Amhara',
+          category: 'Natural',
+          description: 'Spectacular landscapes with jagged mountain peaks, deep valleys, and rare wildlife like the Gelada baboon, Ethiopian wolf, and Walia ibex. Perfect for trekking and nature photography.',
+          image: 'https://images.pexels.com/photos/17265749/pexels-photo-17265749/free-photo-of-gelada-baboon-in-simien-mountains-ethiopia.jpeg',
+          latitude: 13.1491,
+          longitude: 38.0319
+        },
+        {
+          _id: '3',
+          name: 'Danakil Depression',
+          location: 'Afar Region',
+          category: 'Adventure',
+          description: 'One of the hottest and lowest places on Earth, featuring otherworldly landscapes, salt lakes, acid springs, and active volcanoes like Erta Ale. A true adventure for the brave.',
+          image: 'https://images.pexels.com/photos/8991206/pexels-photo-8991206.jpeg',
+          latitude: 14.2417,
+          longitude: 40.3000
+        },
+        {
+          _id: '4',
+          name: 'Fasil Ghebbi',
+          location: 'Gondar, Amhara',
+          category: 'Historical',
+          description: 'A fortress city that served as the residence of the Ethiopian emperors in the 16th and 17th centuries. The architecture features a unique blend of Hindu, Arab, and Baroque influences.',
+          image: 'https://images.pexels.com/photos/10663467/pexels-photo-10663467.jpeg',
+          latitude: 12.6075,
+          longitude: 37.4697
+        }
+      ];
+      const found = placeholders.find(d => d._id === id);
+      setDestination(found || null);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching destination details:', error);
@@ -89,7 +134,7 @@ const DestinationDetails = () => {
           <div className="p-8">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
               <div>
-                <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">
+                <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-3">
                   {destination.name}
                 </h1>
                 <div className="flex items-center text-gray-600 dark:text-gray-400">
@@ -99,15 +144,31 @@ const DestinationDetails = () => {
                   <span className="text-lg">{destination.location || 'Ethiopia'}</span>
                 </div>
               </div>
-              <button
-                onClick={openGoogleMaps}
-                className="mt-4 md:mt-0 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center"
-              >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                </svg>
-                View on Google Maps
-              </button>
+              <div className="mt-4 md:mt-0 flex items-center gap-3">
+                <button
+                  onClick={() => toggleFavorite(destination)}
+                  className="px-4 py-3 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center justify-center"
+                  aria-label="Toggle favorite"
+                >
+                  <svg 
+                    className={`w-6 h-6 ${isFavorite(destination._id) ? 'text-red-500' : 'text-gray-400 dark:text-gray-300'}`} 
+                    fill={isFavorite(destination._id) ? "currentColor" : "none"} 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                </button>
+                <button
+                  onClick={openGoogleMaps}
+                  className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                  </svg>
+                  View on Google Maps
+                </button>
+              </div>
             </div>
 
             <div className="mb-8">

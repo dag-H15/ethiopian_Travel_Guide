@@ -22,7 +22,50 @@ const Destinations = () => {
   const fetchDestinations = async () => {
     try {
       setLoading(true);
-      setDestinations([]);
+      // Placeholder data
+      const placeholders = [
+        {
+          _id: '1',
+          name: 'Lalibela Rock-Hewn Churches',
+          location: 'Lalibela, Amhara',
+          category: 'Historical',
+          description: 'A monolithic church complex carved entirely out of a single rock, dating back to the 12th century.',
+          image: 'https://images.pexels.com/photos/10196720/pexels-photo-10196720.jpeg',
+          latitude: 12.0315,
+          longitude: 39.0410
+        },
+        {
+          _id: '2',
+          name: 'Simien Mountains National Park',
+          location: 'Gondar, Amhara',
+          category: 'Natural',
+          description: 'Spectacular landscapes with jagged mountain peaks, deep valleys, and rare wildlife like the Gelada baboon.',
+          image: 'https://images.pexels.com/photos/17265749/pexels-photo-17265749/free-photo-of-gelada-baboon-in-simien-mountains-ethiopia.jpeg',
+          latitude: 13.1491,
+          longitude: 38.0319
+        },
+        {
+          _id: '3',
+          name: 'Danakil Depression',
+          location: 'Afar Region',
+          category: 'Adventure',
+          description: 'One of the hottest and lowest places on Earth, featuring otherworldly landscapes, salt lakes, and active volcanoes.',
+          image: 'https://images.pexels.com/photos/8991206/pexels-photo-8991206.jpeg',
+          latitude: 14.2417,
+          longitude: 40.3000
+        },
+        {
+          _id: '4',
+          name: 'Fasil Ghebbi',
+          location: 'Gondar, Amhara',
+          category: 'Historical',
+          description: 'A fortress city that served as the residence of the Ethiopian emperors in the 16th and 17th centuries.',
+          image: 'https://images.pexels.com/photos/10663467/pexels-photo-10663467.jpeg',
+          latitude: 12.6075,
+          longitude: 37.4697
+        }
+      ];
+      setDestinations(placeholders);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching destinations:', error);

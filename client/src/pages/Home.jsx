@@ -3,17 +3,27 @@ import { Link } from 'react-router-dom';
 const Home = () => {
   return (
     <div className="min-h-screen">
-      <section className="relative bg-gradient-to-br from-primary-500 to-primary-700 text-white py-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
+      <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center py-20 px-4">
+        {/* Background Image Placeholder */}
+        <div className="absolute inset-0 w-full h-full z-0">
+          <img 
+            src="https://images.pexels.com/photos/3225531/pexels-photo-3225531.jpeg" 
+            alt="Ethiopia Landscape" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/50"></div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto text-center z-10 text-white">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in text-white">
             Discover the Beauty of Ethiopia
           </h1>
-          <p className="text-xl md:text-2xl mb-8 text-white">
+          <p className="text-xl md:text-2xl mb-8 text-gray-200">
             Explore ancient history, stunning landscapes, and vibrant culture
           </p>
           <Link
             to="/destinations"
-            className="inline-block px-8 py-4 bg-white text-primary-600 rounded-lg font-semibold text-lg hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-xl"
+            className="inline-block px-8 py-4 bg-primary-600 text-white rounded-lg font-semibold text-lg hover:bg-primary-700 transform hover:scale-105 transition-all duration-200 shadow-xl"
           >
             Explore Destinations
           </Link>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useFavorites } from '../context/FavoritesContext';
 
 const Profile = () => {
   const [user, setUser] = useState({
@@ -9,7 +10,7 @@ const Profile = () => {
     bio: 'Travel enthusiast exploring the beauty of Ethiopia',
   });
 
-  const [favorites, setFavorites] = useState([]);
+  const { favorites, removeFavorite } = useFavorites();
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({ ...user });
 
@@ -138,7 +139,7 @@ const Profile = () => {
                 <Link
                   key={destination._id}
                   to={`/destinations/${destination._id}`}
-                  className="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                  className="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden hover:shadow-lg transition-shadow relative block group"
                 >
                   <img
                     src={destination.image}
@@ -153,6 +154,19 @@ const Profile = () => {
                       {destination.location}
                     </p>
                   </div>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      removeFavorite(destination._id);
+                    }}
+                    className="absolute top-2 right-2 p-1.5 bg-white dark:bg-gray-800 rounded-full shadow opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-100 dark:hover:bg-gray-600"
+                    aria-label="Remove from favorites"
+                  >
+                    <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </button>
                 </Link>
               ))}
             </div>

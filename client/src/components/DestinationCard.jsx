@@ -1,6 +1,16 @@
 import { Link } from 'react-router-dom';
+import { useFavorites } from '../context/FavoritesContext';
 
 const DestinationCard = ({ destination }) => {
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const favorite = isFavorite(destination._id);
+
+  const handleToggleFavorite = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleFavorite(destination);
+  };
+
   return (
     <Link to={`/destinations/${destination._id}`}>
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300">
@@ -10,8 +20,24 @@ const DestinationCard = ({ destination }) => {
             alt={destination.name}
             className="w-full h-full object-cover"
           />
-          <div className="absolute top-3 right-3 bg-white dark:bg-gray-800 px-3 py-1 rounded-full text-sm font-medium">
-            {destination.category || 'Destination'}
+          <div className="absolute top-3 right-3 flex gap-2">
+            <div className="bg-white dark:bg-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+              {destination.category || 'Destination'}
+            </div>
+            <button 
+              onClick={handleToggleFavorite}
+              className="bg-white dark:bg-gray-800 p-1.5 rounded-full shadow hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+              aria-label="Toggle favorite"
+            >
+              <svg 
+                className={`w-5 h-5 ${favorite ? 'text-red-500' : 'text-gray-400'}`} 
+                fill={favorite ? "currentColor" : "none"} 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            </button>
           </div>
         </div>
 
